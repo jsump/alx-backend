@@ -64,11 +64,11 @@ class Server:
         page: args, default value of 1
         page_size: args, default value of 10
         """
-        assert isinstance(page, int) and page > 0,
-        "Page should be an integer > 0"
+        assert isinstance(page, int) and page > 0, \
+            "Page should be an integer > 0"
 
-        assert isinstance(page_size, int) and page_size > 0,
-        "Page size hsould be an integer > 0"
+        assert isinstance(page_size, int) and page_size > 0, \
+            "Page size hsould be an integer > 0"
 
         start_index, end_index = index_range(page, page_size)
         dataset = self.dataset()
