@@ -1,4 +1,4 @@
-#!/usr/bin/enc python3
+#!/usr/bin/env python3
 """
 Module: 0-simple_helper_function.py
 
