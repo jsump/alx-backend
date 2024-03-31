@@ -65,7 +65,9 @@ class Server:
         next_index = min(index + page_size, max_index + 1)
 
         if index not in dataset:
-            index = next((i for i in range(index, max_index + 1) if i in dataset),None)
+            index = next(
+                    (i for i in range(
+                        index, max_index + 1) if i in dataset), None)
             if index is None:
                 return {
                         "index": None,
@@ -74,11 +76,11 @@ class Server:
                         "data": []
                         }
             next_index = min(index + page_size, max_index + 1)
-        
+
         return {
                 "index": index,
                 "next_index": next_index,
                 "page_size": page_size,
-                "data": [dataset[i] for i in range
-                    (index, min(next_index, max_index + 1))]
+                "data": [dataset[i] for i in range(
+                    index, min(next_index, max_index + 1))]
                 }
