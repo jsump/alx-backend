@@ -8,7 +8,7 @@ This module contains a basic FLASK APP
 
 from flask import Flask, render_template
 
-app = Flask(__app__)
+app = Flask(__name__)
 
 
 @app.route('/')
