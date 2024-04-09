@@ -26,7 +26,7 @@ babel = Babel(app)
 
 app.config['LANGUAGES'] = ["en", "fr"]
 
-@babel.localselector
+@babel.localeselector
 def get_locale():
     """
     Thie method determines the best match to supported languages
@@ -39,7 +39,7 @@ def index():
     """
     This method returns the htmls template
     """
-    return render_template('1-index.html')
+    return render_template('2-index.html')
 
 
 if __name__ == "__main__":
