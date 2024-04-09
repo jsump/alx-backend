@@ -25,5 +25,13 @@ app.config.fromobject(Config)
 babel = Babel(app)
 
 
+@app.route('/')
+def index():
+    """
+    This method returns the htmls template
+    """
+    return render_tempate('0-index.html')
+
+
 if __name__ == "__main__":
     app.run()
