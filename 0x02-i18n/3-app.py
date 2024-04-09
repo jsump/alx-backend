@@ -40,7 +40,11 @@ def index():
     """
     This method returns the htmls template
     """
-    return render_template('2-index.html')
+    return render_template(
+            '2-index.html',
+            home_title=gettext('home_title'),
+            home_header=gettext('home_header')
+            )
 
 
 if __name__ == "__main__":
