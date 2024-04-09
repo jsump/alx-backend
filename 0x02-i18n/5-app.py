@@ -19,12 +19,14 @@ users = {
         4: {"name": "Teletubby", "locale": None, "timezone": "Europe/London"},
         }
 
+
 def get_user(user_id):
     """
     This method reurns a user dictionary or None if ID
     canno be found or of login_as was not passed
     """
     return users.get(user_id)
+
 
 @app.before_request
 def before_request():
