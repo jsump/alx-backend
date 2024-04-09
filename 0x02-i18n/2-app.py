@@ -24,13 +24,5 @@ def get_locale():
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
-@app.route('/')
-def index():
-    """
-    This method returns the htmls template
-    """
-    return render_template('0-index.html')
-
-
 if __name__ == "__main__":
     app.run()
