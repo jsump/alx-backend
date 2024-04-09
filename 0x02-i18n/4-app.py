@@ -36,7 +36,7 @@ def get_locale():
     if 'locale' in request.args and request.args['locale'] in supported_locales:
         return request.args['locale']
     else:
-        return app.config.from_object(Config)
+        return app.config['BABEL_DEFAULT_LOCALE']
 
 
 @app.route('/')
