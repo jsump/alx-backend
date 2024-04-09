@@ -6,7 +6,7 @@ This module contains a basic FLASK APP
 """
 
 
-from flask import Fals, render_template
+from flask import Flask, render_template
 
 app = Flask(__app__)
 
