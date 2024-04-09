@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Module: 4-app.py
+Module: 6-app.py
 
 This module contains a basic FLASK APP
 """
@@ -23,11 +23,11 @@ def get_locale():
     if hasattr(request, 'user') and request.user and 'locale' in request.user:
         user_locale = request.user['locale']
         if user.locale:
-        return user_locale
+            return user_locale
 
     header_locale = request.headers.get('Accept-language')
     if header_locale:
-        return header_locale.split(',')]
+        return header_locale.split(',')[0]
 
     return 'en'
 
@@ -37,7 +37,7 @@ def index():
     """
     This method returns the htmls template
     """
-    return render_template('5-index.html')
+    return render_template('6-index.html')
 
 
 if __name__ == "__main__":
