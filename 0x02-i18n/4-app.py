@@ -33,10 +33,10 @@ def get_locale():
     """
     Thie method determines the best match to supported languages
     """
-    if 'locale' in request.args and request.args['locale'] in supported_locales:
+    if 'locale' in request.args and request.args['locale'] in suported_locales:
         return request.args['locale']
     else:
-        return app.config['BABEL_DEFAUL_LOCALE']
+        return defaukt_locale_function()
 
 
 @app.route('/')
