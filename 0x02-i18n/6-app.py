@@ -6,7 +6,7 @@ This module contains a basic FLASK APP
 """
 
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_babel import Babel, gettext
 
 app = Flask(__name__)
