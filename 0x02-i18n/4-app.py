@@ -45,8 +45,7 @@ def index():
     """
     This method returns the htmls template
     """
-    locale = get_locale()
-    return f'Current locale: {locale}'
+    return render_template('4-index.html')
 
 
 if __name__ == "__main__":
