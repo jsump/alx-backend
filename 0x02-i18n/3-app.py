@@ -8,6 +8,7 @@ This module contains a basic FLASK APP
 
 from flask import Flask, render_template
 from flask_babel import Babel, gettext
+from typing import Callable
 
 app = Flask(__name__)
 
@@ -16,9 +17,9 @@ class Config:
     """
     This class contains language attributes
     """
-    LANGUAGES = ["en", "fr"]
-    BABEL_DEFAULT_LOCALE = 'en'
-    BABEL_DEFAULT_TIMEZONE = 'UTC'
+    LANGUAGES: list[str] = ["en", "fr"]
+    BABEL_DEFAULT_LOCALE: str = 'en'
+    BABEL_DEFAULT_TIMEZONE: str = 'UTC'
 
 
 app.config.from_object(Config)
@@ -28,7 +29,7 @@ app.config['LANGUAGES'] = ["en", "fr"]
 
 
 @babel.localeselector
-def get_locale():
+def get_locale() -> str:
     """
     Thie method determines the best match to supported languages
     """
@@ -36,7 +37,7 @@ def get_locale():
 
 
 @app.route('/')
-def index():
+def index() -> str:
     """
     This method returns the htmls template
     """
