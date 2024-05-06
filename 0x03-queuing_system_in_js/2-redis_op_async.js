@@ -24,7 +24,6 @@ function setNewSchool(schoolName, value) {
 
 // Log to console the value for key passed as argument
 async function displaySchoolValue(schoolName) {
-
     const value = await getAsync(schoolName);
     console.log(`${value}`);
 }
