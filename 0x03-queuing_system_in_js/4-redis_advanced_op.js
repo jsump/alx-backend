@@ -3,7 +3,7 @@
  */
 import redis from 'redis';
 
-const client : redis.createClient();
+const client = redis.createClient();
 
 // When connection workds correctly
 client.on('connect', () => {
@@ -15,7 +15,7 @@ client.on('error', (error) => {
     console.log(`Redis client not connected to the server: ${error}`);
 });
 
-const hashValues = {
+const hset = {
     Portland:50,
     Seattle:80,
     'New York':20,
@@ -25,18 +25,22 @@ const hashValues = {
 };
 
 // Create Hash keys
-function createHashKeys(hashKey, hashValues) {
-    Object.entries(hashValues).forEach(([key, value]) => {
-        client.hset(hashKey, key, redis.print);
+function createHashKeys(hashKey, hset) {
+    Object.entries(hset).forEach(([key, value]) => {
+        client.hset(hashKey, key, value, redis.print);
     });
 }
 
 // Display Hask Keys
 function displayHashKeys(hashKey) {
-    client.hgetall(hashKey, (result) => {
-        console.log(`${hashKey}:`, result);
+    client.hgetall(hashKey, (error, result) => {
+        if (error) {
+	  console.error(`Error retriving hash keys for ${hashKey}: ${error}`);
+	} else {
+	  console.log(`${hashKey}:`, result);
+	}
     });
 }
 
-createHashKeys('HolbertonSchools', hashValues);
+createHashKeys('HolbertonSchools', hset);
 displayHashKeys('HolbertonSchools');
