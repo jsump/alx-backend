@@ -6,7 +6,9 @@ const queue = kue.createQueue();
 
 // Fucntion to create notification
 function sendNotification(phoneNumber, message) {
-    console.log(`Sending notification to PHONE_NUMBER, with message: ${message}`);
+    phoneNumber ='0123456789',
+    message = 'This is the code to verify your account';
+    console.log(`Sending notification to ${phoneNumber}}, with message: ${message}`);
 }
 
 // Listen to job processes on queue
