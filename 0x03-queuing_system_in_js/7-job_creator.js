@@ -92,7 +92,7 @@ queue.process('push_notification_code_2', (job, done) => {
 // Start processing 'push_notification_code' jobs
 queue.process('push_notification_code', (job, done) => {
     const { phoneNumber, message } = job.data;
-    sendNotification(phoneNumber, message); // Make sure to define sendNotification function
+    sendNotification(phoneNumber, message);
     done();
 });
 
