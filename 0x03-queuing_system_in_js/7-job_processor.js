@@ -50,3 +50,26 @@ process.once('SIGINT', () => {
         process.exit(0);
     });
 });
+
+// Loop through jobs
+jobs.forEach((jobData) => {
+    const pushNotificationJob = queue.create('push_notification_code_2', jobData);
+
+    // When job is completed
+    pushNotificationJob.on('complete', () => {
+        console.log(`Notification job ${pushNotificationJob.id} completed`);
+    });
+
+    // When a job isn't working
+    pushNotificationJob.on('failed', (error) => {
+        console.log(`Notification job ${pushNotificationJob.id} failed: ${error}`);
+    });
+
+    // When a job is progressing
+    pushNotificationJob.on('progress', (progress, data) => {
+        console.log(`Notification job ${pushNotificationJob.id} ${progress}% complete`);
+    });
+
+    // Save job to queue
+    pushNotificationJob.save();
+});
