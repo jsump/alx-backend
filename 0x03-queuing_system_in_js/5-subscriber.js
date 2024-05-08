@@ -20,7 +20,7 @@ client.subscribe('holberton school channel');
 
 //Log message to console when receiving message on channel
 client.on('message', (channel, message) => {
-    console.log(`Recieved message on channel "${channel}": ${message}`);
+    console.log(`${message}`);
 
     // Unsubscribe if server is killed
     if (message === 'KILL_SERVER') {
