@@ -52,12 +52,9 @@ const jobs = [
     }
 ];
 
-// create queue
-const pushNotificationQueue = queue.createQueue();
-
-// Loop
+// Loop through jobs
 jobs.forEach((jobData) => {
-    const pushNotificationJob = pushNotificationQueue.create('push_notification_code_2', jobData);
+    const pushNotificationJob = queue.create('push_notification_code_2', jobData);
 
     // When job is completed
     pushNotificationJob.on('complete', () => {
@@ -66,7 +63,7 @@ jobs.forEach((jobData) => {
 
     // When a job isn't working
     pushNotificationJob.on('failed', (error) => {
-        console.log(`Notification job ${pushNotificationJob.id} failed`);
+        console.log(`Notification job ${pushNotificationJob.id} failed: ${error}`);
     });
 
     // When a job is progressing
@@ -74,18 +71,17 @@ jobs.forEach((jobData) => {
         console.log(`Notification job ${pushNotificationJob.id} ${progress}% complete`);
     });
 
-    //save job to queue
-    pushNotificationQueue.save();
-
+    // Save job to queue
+    pushNotificationJob.save();
 });
 
-// start queue
-queue.process('push_notification_code_2', (job,done) => {
+// Process 'push_notification_code_2' jobs
+queue.process('push_notification_code_2', (job, done) => {
     setTimeout(() => {
         job.progress(50, 100);
 
         const random = Math.random();
-        if (random <0.5) {
+        if (random < 0.5) {
             done();
         } else {
             done(new Error('Error'));
@@ -93,35 +89,33 @@ queue.process('push_notification_code_2', (job,done) => {
     }, Math.random() * 5000);
 });
 
-// Listen to job processes on queue
+// Start processing 'push_notification_code' jobs
 queue.process('push_notification_code', (job, done) => {
     const { phoneNumber, message } = job.data;
-    sendNotification(phoneNumber, message);
+    sendNotification(phoneNumber, message); // Make sure to define sendNotification function
     done();
 });
 
-// start queue
+// Listen for queue events
 queue.on('ready', () => {
-    console.log('Ready');
+    console.log('Queue is ready');
 });
 
-// Error
 queue.on('error', (err) => {
-    console.log('Error', err);
+    console.log('Queue error:', err);
 });
 
-// Process termination
+// Handle process termination
 process.once('SIGTERM', () => {
     queue.shutdown(5000, (err) => {
-        console.log('Shutdown');
-        process.exit(0)
+        console.log('Queue shutdown');
+        process.exit(0);
     });
 });
 
 process.once('SIGINT', () => {
     queue.shutdown(5000, (err) => {
-        console.log('Shutdown');
-        process.exit(0)
+        console.log('Queue shutdown');
+        process.exit(0);
     });
 });
-
