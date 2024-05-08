@@ -7,7 +7,7 @@ const queue = kue.createQueue();
 // Array for blacklisted phone numbers
 const blacklisted = ['4153518780', '4153518781'];
 
-// Fucntion to send notifs
+// Function to send notifications
 function sendNotification(phoneNumber, message, job, done) {
     if (blacklisted.includes(phoneNumber)) {
         done(new Error(`Phone number ${phoneNumber} is blacklisted`));
@@ -20,6 +20,29 @@ function sendNotification(phoneNumber, message, job, done) {
         }, 1000);
     }
 }
+
+// Loop through jobs
+jobs.forEach((jobData) => {
+    const pushNotificationJob = queue.create('push_notification_code_2', jobData);
+
+    // When job is completed
+    pushNotificationJob.on('complete', () => {
+        console.log(`Notification job ${pushNotificationJob.id} completed`);
+    });
+
+    // When a job isn't working
+    pushNotificationJob.on('failed', (error) => {
+        console.log(`Notification job ${pushNotificationJob.id} failed: ${error}`);
+    });
+
+    // When a job is progressing
+    pushNotificationJob.on('progress', (progress, data) => {
+        console.log(`Notification job ${pushNotificationJob.id} ${progress}% complete`);
+    });
+
+    // Save job to queue
+    pushNotificationJob.save();
+});
 
 // Process jobs from the queue
 queue.process('push_notification_code_2', 2, (job, done) => {
@@ -49,27 +72,4 @@ process.once('SIGINT', () => {
         console.log('Queue shutdown');
         process.exit(0);
     });
-});
-
-// Loop through jobs
-jobs.forEach((jobData) => {
-    const pushNotificationJob = queue.create('push_notification_code_2', jobData);
-
-    // When job is completed
-    pushNotificationJob.on('complete', () => {
-        console.log(`Notification job ${pushNotificationJob.id} completed`);
-    });
-
-    // When a job isn't working
-    pushNotificationJob.on('failed', (error) => {
-        console.log(`Notification job ${pushNotificationJob.id} failed: ${error}`);
-    });
-
-    // When a job is progressing
-    pushNotificationJob.on('progress', (progress, data) => {
-        console.log(`Notification job ${pushNotificationJob.id} ${progress}% complete`);
-    });
-
-    // Save job to queue
-    pushNotificationJob.save();
 });
