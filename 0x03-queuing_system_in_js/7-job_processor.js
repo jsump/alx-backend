@@ -10,52 +10,52 @@ const blacklisted = ['4153518780', '4153518781'];
 //aray
 const jobs = [
     {
-      phoneNumber: '4153518780',
-      message: 'This is the code 1234 to verify your account'
+        phoneNumber: '4153518780',
+        message: 'This is the code 1234 to verify your account'
     },
     {
-      phoneNumber: '4153518781',
-      message: 'This is the code 4562 to verify your account'
+        phoneNumber: '4153518781',
+        message: 'This is the code 4562 to verify your account'
     },
     {
-      phoneNumber: '4153518743',
-      message: 'This is the code 4321 to verify your account'
+        phoneNumber: '4153518743',
+        message: 'This is the code 4321 to verify your account'
     },
     {
-      phoneNumber: '4153538781',
-      message: 'This is the code 4562 to verify your account'
+        phoneNumber: '4153538781',
+        message: 'This is the code 4562 to verify your account'
     },
     {
-      phoneNumber: '4153118782',
-      message: 'This is the code 4321 to verify your account'
+        phoneNumber: '4153118782',
+        message: 'This is the code 4321 to verify your account'
     },
     {
-      phoneNumber: '4153718781',
-      message: 'This is the code 4562 to verify your account'
+        phoneNumber: '4153718781',
+        message: 'This is the code 4562 to verify your account'
     },
     {
-      phoneNumber: '4159518782',
-      message: 'This is the code 4321 to verify your account'
+        phoneNumber: '4159518782',
+        message: 'This is the code 4321 to verify your account'
     },
     {
-      phoneNumber: '4158718781',
-      message: 'This is the code 4562 to verify your account'
+        phoneNumber: '4158718781',
+        message: 'This is the code 4562 to verify your account'
     },
     {
-      phoneNumber: '4153818782',
-      message: 'This is the code 4321 to verify your account'
+        phoneNumber: '4153818782',
+        message: 'This is the code 4321 to verify your account'
     },
     {
-      phoneNumber: '4154318781',
-      message: 'This is the code 4562 to verify your account'
+        phoneNumber: '4154318781',
+        message: 'This is the code 4562 to verify your account'
     },
     {
-      phoneNumber: '4151218782',
-      message: 'This is the code 4321 to verify your account'
+        phoneNumber: '4151218782',
+        message: 'This is the code 4321 to verify your account'
     }
-  ];
-  
-  // Function to send notifications
+];
+
+// Function to send notifications
 function sendNotification(phoneNumber, message, job, done) {
     if (blacklisted.includes(phoneNumber)) {
         done(new Error(`Phone number ${phoneNumber} is blacklisted`));
@@ -69,28 +69,34 @@ function sendNotification(phoneNumber, message, job, done) {
     }
 }
 
-// Loop through jobs
-jobs.forEach((jobData) => {
-    const pushNotificationJob = queue.create('push_notification_code_2', jobData);
+function createPushNotificationsJobs(jobs, queue) {
+    // Check if jobs is an array
+    if (!Array.isArray(jobs)) {
+        throw new Error('Jobs is not an Array');
+    }
+    // Loop through jobs
+    jobs.forEach((jobData) => {
+        const pushNotificationJob = queue.create('push_notification_code_2', jobData);
 
-    // When job is completed
-    pushNotificationJob.on('complete', () => {
-        console.log(`Notification job ${pushNotificationJob.id} completed`);
+        // When job is completed
+        pushNotificationJob.on('complete', () => {
+            console.log(`Notification job ${pushNotificationJob.id} completed`);
+        });
+
+        // When a job isn't working
+        pushNotificationJob.on('failed', (error) => {
+            console.log(`Notification job ${pushNotificationJob.id} failed: ${error}`);
+        });
+
+        // When a job is progressing
+        pushNotificationJob.on('progress', (progress, data) => {
+            console.log(`Notification job ${pushNotificationJob.id} ${progress}% complete`);
+        });
+
+        // Save job to queue
+        pushNotificationJob.save();
     });
-
-    // When a job isn't working
-    pushNotificationJob.on('failed', (error) => {
-        console.log(`Notification job ${pushNotificationJob.id} failed: ${error}`);
-    });
-
-    // When a job is progressing
-    pushNotificationJob.on('progress', (progress, data) => {
-        console.log(`Notification job ${pushNotificationJob.id} ${progress}% complete`);
-    });
-
-    // Save job to queue
-    pushNotificationJob.save();
-});
+}
 
 // Process jobs from the queue
 queue.process('push_notification_code_2', 2, (job, done) => {
