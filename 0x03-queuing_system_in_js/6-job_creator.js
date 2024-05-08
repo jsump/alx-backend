@@ -14,8 +14,8 @@ const jobObject = {
 const pushNotificationQueue = queue.create('push_notification_code', jobObject);
 
 // When job is created without error
-pushNotificationQueue.on('enqueue', (job, id) => {
-    console.log(`Notification job created: ${id}`);
+pushNotificationQueue.on('enqueue', (push_notification_code, id) => {
+    console.log(`Notification job created: ${push_notification_code.id}`);
 });
 
 // When job is completed
@@ -28,4 +28,5 @@ pushNotificationQueue.on('failure', () => {
     console.log('Notification job failed');
 });
 
+//save job to queue
 pushNotificationQueue.save();
